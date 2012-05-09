@@ -11,7 +11,7 @@ public class Brevity {
 
     private final static String NOT_A_STRING = "NOT_A_STRING";
 
-    private final Map<String, Set<String>> graph = new HashMap<String, Set<String>>();
+    private final Map<String, Set<String>> graph = new LinkedHashMap<String, Set<String>>();
 
     public void addWord(final String word) {
         graph.put(word, brevityWordGenerator(word));
@@ -32,7 +32,7 @@ public class Brevity {
         return false;
     }
 
-    public int findShort() {
+    public void findShort() {
 
         Map<String, String> matching = new HashMap<String, String>();
 
@@ -44,16 +44,25 @@ public class Brevity {
             }
         }
 
-        int matches = 0;
-
         Map<String, Boolean> visited = new HashMap<String, Boolean>();
         for (String word : graph.keySet()) {
-            if (findPath(word, matching, visited)) {
-                ++matches;
+            findPath(word, matching, visited);
+        }
+
+        final Map<String, String> reverseMatching = new HashMap<String, String>();
+        for (Map.Entry<String, String> e : matching.entrySet()) {
+            if (!NOT_A_STRING.equals(e.getValue())) {
+                reverseMatching.put(e.getValue(), e.getKey());
             }
         }
 
-        return matches;
+        if (reverseMatching.size() != graph.size()) {
+            System.out.println(-1);
+        } else {
+            for (String k: graph.keySet()) {
+                System.out.println(reverseMatching.get(k));
+            }
+        }
     }
 
     public static void main(final String[] args) {
@@ -66,7 +75,7 @@ public class Brevity {
             brevity.addWord(scanner.nextLine());
         }
 
-        System.out.println(brevity.findShort());
+        brevity.findShort();
     }
 
     private static Set<String> brevityWordGenerator(final String word) {
