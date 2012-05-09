@@ -1,5 +1,3 @@
-package ru.csc.algorithms;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;

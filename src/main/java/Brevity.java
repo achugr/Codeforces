@@ -1,11 +1,4 @@
-package ru.csc.algorithms;
-
 import java.util.*;
-
-/**
- * @author daddy-bear
- *         Date: 09.05.12 - 8:12
- */
 
 public class Brevity {
 
