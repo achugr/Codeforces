@@ -2,7 +2,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.Scanner;
 
 public class Brevity {
 
@@ -51,7 +56,6 @@ public class Brevity {
 
         final Map<String, String> reverseMatching = new HashMap<String, String>();
         for (final Map.Entry<String, String> e : matching.entrySet()) {
-            //System.out.println(e);
             if (!NOT_A_STRING.equals(e.getValue())) {
                 reverseMatching.put(e.getValue(), e.getKey());
             }
@@ -81,25 +85,11 @@ public class Brevity {
         brevity.findShort();
     }
 
-    /*private static Set<String> brevityWordGenerator(final String word) {
-        int wordLength = word.length();
-
-        final Set<String> brevityWords = new HashSet<String>();
-        for (int i = 1; i <= 4; i++) {
-            for (int j = 0; j <= wordLength - i; j++) {
-                brevityWords.add(word.substring(j, j + i));
-            }
-        }
-
-        return brevityWords;
-    }*/
-
     private static Set<String> brevityWordGenerator(final String word) {
         int wordLength = word.length();
 
         final Set<String> brevityWords = new HashSet<String>();
         for (int j = 0; j < wordLength; j++) {
-            //brevityWords.add(word.substring(j, j + 1));
             walk(word.substring(j, j + 1), j + 1, word.length(), word, brevityWords);
         }
 
