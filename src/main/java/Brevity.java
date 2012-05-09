@@ -20,7 +20,7 @@ public class Brevity {
         for (final Map.Entry<String, String> e : matching.entrySet()) {
             final String value = e.getValue();
             final String key = e.getKey();
-            if (graph.get(word).contains(e.getKey()) && (NOT_A_STRING.equals(value) || !visited.get(value) && findPath(value, matching, visited))) {
+            if (graph.get(word).contains(key) && (NOT_A_STRING.equals(value) || !visited.get(value) && (findPath(value, matching, visited)))) {
                 matching.put(key, word);
                 return true;
             }
@@ -34,24 +34,24 @@ public class Brevity {
         final Map<String, String> matching = new HashMap<String, String>();
 
         for (final Map.Entry<String, Set<String>> e : graph.entrySet()) {
-            for (String s : e.getValue()) {
+            for (final String s : e.getValue()) {
                 if (!matching.containsKey(s)) {
                     matching.put(s, NOT_A_STRING);
                 }
             }
         }
 
-        final Map<String, Boolean> visited = new HashMap<String, Boolean>();
-        for (final String word: graph.keySet()) {
-            visited.put(word, false);
-        }
-
         for (final String word : graph.keySet()) {
+            final Map<String, Boolean> visited = new HashMap<String, Boolean>();
+            for (final String w : graph.keySet()) {
+                visited.put(w, false);
+            }
             findPath(word, matching, visited);
         }
 
         final Map<String, String> reverseMatching = new HashMap<String, String>();
         for (final Map.Entry<String, String> e : matching.entrySet()) {
+            //System.out.println(e);
             if (!NOT_A_STRING.equals(e.getValue())) {
                 reverseMatching.put(e.getValue(), e.getKey());
             }
@@ -61,7 +61,7 @@ public class Brevity {
         if (reverseMatching.size() != graph.size()) {
             pw.println(-1);
         } else {
-            for (final String k: graph.keySet()) {
+            for (final String k : graph.keySet()) {
                 pw.println(reverseMatching.get(k));
             }
         }
@@ -72,8 +72,8 @@ public class Brevity {
         final Brevity brevity = new Brevity();
 
         final Scanner scanner = new Scanner(new BufferedReader(new FileReader("input.txt")));
-        int wordCount = scanner.nextInt();
-        scanner.nextLine();
+        int wordCount = Integer.parseInt(scanner.nextLine());
+
         for (int i = 0; i < wordCount; i++) {
             brevity.addWord(scanner.nextLine());
         }
@@ -81,7 +81,7 @@ public class Brevity {
         brevity.findShort();
     }
 
-    private static Set<String> brevityWordGenerator(final String word) {
+    /*private static Set<String> brevityWordGenerator(final String word) {
         int wordLength = word.length();
 
         final Set<String> brevityWords = new HashSet<String>();
@@ -92,5 +92,29 @@ public class Brevity {
         }
 
         return brevityWords;
+    }*/
+
+    private static Set<String> brevityWordGenerator(final String word) {
+        int wordLength = word.length();
+
+        final Set<String> brevityWords = new HashSet<String>();
+        for (int j = 0; j < wordLength; j++) {
+            //brevityWords.add(word.substring(j, j + 1));
+            walk(word.substring(j, j + 1), j + 1, word.length(), word, brevityWords);
+        }
+
+        return brevityWords;
+    }
+
+    private static void walk(final String seq, final int end, final int fullSize, final String initial, final Set<String> brevityWords) {
+        brevityWords.add(seq);
+
+        if (seq.length() == 4) {
+            return;
+        }
+
+        for (int i = end; i < fullSize; i++) {
+            walk(seq + initial.charAt(i), i + 1, fullSize, initial, brevityWords);
+        }
     }
 }
