@@ -61,6 +61,7 @@ public class Brevity {
 
         Scanner scanner = new Scanner(System.in);
         int wordCount = scanner.nextInt();
+        scanner.nextLine();
         for (int i = 0; i < wordCount; i++) {
             brevity.addWord(scanner.nextLine());
         }
@@ -72,13 +73,9 @@ public class Brevity {
         int wordLength = word.length();
 
         final Set<String> brevityWords = new HashSet<String>();
-        for (int i = 1; i < 4; i++) {
-            for (int j = 0; j <= wordLength - 1 - i; j++) {
-                if (j + i <= wordLength - 1) {
-                    brevityWords.add(word.substring(j, j + i));
-                } else {
-                    break;
-                }
+        for (int i = 1; i <= 4; i++) {
+            for (int j = 0; j <= wordLength - i; j++) {
+                brevityWords.add(word.substring(j, j + i));
             }
         }
 
